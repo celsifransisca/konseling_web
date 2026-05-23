@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Chat Konseling</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo-area">
+
+        <div class="logo-box">
+
+            <i class="fa-solid fa-brain"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                Konseling+
+            </h2>
+
+            <p>
+                Dashboard Psikolog
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PROFILE -->
+
+    <div class="profile-card">
+
+        <img
+        src="https://i.pravatar.cc/150?img=12"
+        class="profile-img">
+
+        <h3 id="doctorName">
+            Psikolog
+        </h3>
+
+        <span>
+            Clinical Psychologist
+        </span>
+
+        <div class="online-status">
+
+            <div class="dot"></div>
+
+            Online
+
+        </div>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="menu">
+
+        <a href="dashboard-admin.html">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Dashboard
+
+        </a>
+
+        <a href="jadwal.html">
+
+            <i class="fa-solid fa-calendar"></i>
+
+            Jadwal Saya
+
+        </a>
+
+        <a href="booking.html">
+
+            <i class="fa-solid fa-users"></i>
+
+            Antrean Konseling
+
+        </a>
+
+        <a
+        href="chat.html"
+        class="active">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Chat Konseling
+
+        </a>
+
+        <a href="laporan.html">
+
+            <i class="fa-solid fa-notes-medical"></i>
+
+            Laporan Sesi
+
+        </a>
+        
+        <a href="profile.html">
+
+            <i class="fa-solid fa-user-doctor"></i>
+
+            Profile Saya
+
+        </a>
+
+        <a
+        href="#"
+        onclick="logout()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                Chat Konseling
+            </h1>
+
+            <p>
+                Konseling realtime dengan mahasiswa
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- CHAT -->
+
+    <div class="chat-layout">
+
+        <!-- USER LIST -->
+
+        <div class="chat-users">
+
+            <div class="section-header">
+
+                <h2>
+                    Mahasiswa
+                </h2>
+
+                <p>
+                    Daftar sesi aktif
+                </p>
+
+            </div>
+
+            <div class="chat-user">
+
+                Anonim #A102
+
+            </div>
+
+            <div class="chat-user">
+
+                Anonim #B221
+
+            </div>
+
+            <div class="chat-user">
+
+                Anonim #C881
+
+            </div>
+
+        </div>
+
+        <!-- CHAT BOX -->
+
+        <div class="chat-box">
+
+            <div class="section-header">
+
+                <h2>
+                    Sesi Konseling
+                </h2>
+
+                <p>
+                    Realtime discussion
+                </p>
+
+            </div>
+
+            <!-- MESSAGES -->
+
+            <div
+            class="messages"
+            id="messages">
+
+                <div class="message message-user">
+
+                    Halo dok saya sedang
+                    anxiety menghadapi skripsi
+
+                </div>
+
+                <div class="message message-admin">
+
+                    Baik, coba ceritakan
+                    lebih lanjut ya 😊
+
+                </div>
+
+            </div>
+
+            <!-- INPUT -->
+
+            <div class="chat-input">
+
+                <input
+                type="text"
+                id="messageInput"
+                placeholder="Ketik pesan...">
+
+                <button
+                class="btn-primary"
+                onclick="sendMessage()">
+
+                    Kirim
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+
+</body>
+</html>

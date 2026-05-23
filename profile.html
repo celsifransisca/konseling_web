@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Profile Psikolog</title>
+
+<link rel="stylesheet"
+href="css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo-area">
+
+        <div class="logo-box">
+
+            <i class="fa-solid fa-brain"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                Konseling+
+            </h2>
+
+            <p>
+                Dashboard Psikolog
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PROFILE -->
+
+    <div class="profile-card">
+
+        <img
+        src="https://i.pravatar.cc/150?img=12"
+        class="profile-img">
+
+        <h3 id="doctorName">
+            Psikolog
+        </h3>
+
+        <span id="doctorSpecialist">
+            Clinical Psychologist
+        </span>
+
+        <div class="online-status">
+
+            <div class="dot"></div>
+
+            Online
+
+        </div>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="menu">
+
+        <a href="dashboard-admin.html">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Dashboard
+
+        </a>
+
+        <a href="jadwal.html">
+
+            <i class="fa-solid fa-calendar"></i>
+
+            Jadwal Saya
+
+        </a>
+
+        <a href="booking.html">
+
+            <i class="fa-solid fa-users"></i>
+
+            Antrean Konseling
+
+        </a>
+
+        <a href="chat.html">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Chat Konseling
+
+        </a>
+
+        <a href="laporan.html">
+
+            <i class="fa-solid fa-notes-medical"></i>
+
+            Laporan Sesi
+
+        </a>
+
+        <a
+        href="profile.html"
+        class="active">
+
+            <i class="fa-solid fa-user-doctor"></i>
+
+            Profile Saya
+
+        </a>
+
+        <a
+        href="#"
+        onclick="logout()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                Profile Psikolog
+            </h1>
+
+            <p>
+                Informasi profile profesional
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PROFILE FORM -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                Informasi Profile
+            </h2>
+
+            <p>
+                Kelola data psikolog
+            </p>
+
+        </div>
+
+        <!-- FOTO -->
+
+        <div
+        style="
+        text-align:center;
+        margin-bottom:30px;
+        ">
+
+            <img
+            src="https://i.pravatar.cc/200?img=12"
+            id="previewImage"
+            style="
+            width:140px;
+            height:140px;
+            border-radius:50%;
+            object-fit:cover;
+            ">
+
+        </div>
+
+        <!-- NAMA -->
+
+        <div class="input-group">
+
+            <label>
+                Nama Lengkap
+            </label>
+
+            <input
+            type="text"
+            id="nama">
+
+        </div>
+
+        <!-- SPESIALIS -->
+
+        <div class="input-group">
+
+            <label>
+                Spesialisasi
+            </label>
+
+            <input
+            type="text"
+            id="spesialisasi">
+
+        </div>
+
+        <!-- BIO -->
+
+        <div class="input-group">
+
+            <label>
+                Bio Psikolog
+            </label>
+
+            <textarea
+            id="bio"></textarea>
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button
+        class="btn-primary"
+        onclick="saveProfile()">
+
+            Simpan Profile
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/profile.js"></script>
+
+</body>
+</html>
