@@ -43,28 +43,42 @@ async function login(){
         const data =
         await response.json();
 
+        console.log(data);
+
         if(response.ok){
+
+            // =========================
+            // SIMPAN DATA LOGIN
+            // =========================
 
             localStorage.setItem(
                 "token",
-                data.token
+                data.token || ""
             );
 
             localStorage.setItem(
                 "username",
-                data.username
+                data.user.username
             );
 
             localStorage.setItem(
                 "role",
-                data.role
+                data.user.role
             );
 
-            /*
-            ==========================
-            REDIRECT
-            ==========================
-            */
+            localStorage.setItem(
+                "user_id",
+                data.user.id
+            );
+
+            console.log(
+                "USER ID:",
+                data.user.id
+            );
+
+            // =========================
+            // REDIRECT
+            // =========================
 
             window.location.href =
             "dashboard-admin.html";

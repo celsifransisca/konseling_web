@@ -1,86 +1,206 @@
+checkLogin();
+
+const API_URL =
+"http://10.179.106.236:3000/api/booking";
+
+const username =
+localStorage.getItem("username");
+
+const userId =
+localStorage.getItem("user_id");
+
+document.getElementById(
+    "doctorName"
+).innerHTML =
+username || "Psikolog";
+
+
+// ======================================
+// LOAD BOOKING
+// ======================================
+
 async function loadBooking(){
 
-    const response = await fetch(
-        "http://localhost:3000/api/booking"
-    );
+    try{
 
-    const data = await response.json();
+        const response =
+        await fetch(
 
-    const table =
-    document.getElementById(
-        "bookingTable"
-    );
+            `${API_URL}/psikolog/${userId}`
 
-    table.innerHTML = "";
+        );
 
-    data.forEach((item)=>{
+        const data =
+        await response.json();
 
-        table.innerHTML += `
+        console.log(
+            "BOOKING:",
+            data
+        );
 
-        <tr>
+        const table =
+        document.getElementById(
+            "bookingTable"
+        );
 
-            <td>
-                ${item.username || "Anonim"}
-            </td>
+        table.innerHTML = "";
 
-            <td>
-                ${item.catatan_mahasiswa}
-            </td>
+        // ======================================
+        // KALAU TIDAK ADA DATA
+        // ======================================
 
-            <td>
+        if(!data || data.length === 0){
 
-                <span class="badge badge-warning">
+            table.innerHTML = `
 
-                    ${item.status_konseling}
+            <tr>
 
-                </span>
+                <td colspan="4"
+                style="
+                text-align:center;
+                padding:20px;
+                ">
 
-            </td>
+                    Belum ada booking
 
-            <td>
+                </td>
 
-                <button
-                onclick="ubahStatus(
-                ${item.id},
-                'berjalan'
-                )"
-                class="btn-primary">
+            </tr>
 
-                    Mulai
+            `;
 
-                </button>
+            return;
 
-            </td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-async function ubahStatus(id,status){
-
-    await fetch(
-        `http://localhost:3000/api/booking/${id}/status`,
-        {
-            method:"PUT",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-                status_konseling:status
-            })
         }
-    );
 
-    alert("Status berhasil diubah");
+        // ======================================
+        // LOOP DATA BOOKING
+        // ======================================
 
-    loadBooking();
+        data.forEach((booking) => {
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${booking.nama_mahasiswa || "-"}
+                </td>
+
+                <td>
+                    ${booking.keluhan || "-"}
+                </td>
+
+                <td>
+                    ${booking.status_konseling || "menunggu"}
+                </td>
+
+                <td>
+
+                    <button
+                    class="btn-primary"
+                    onclick="terimaBooking(${booking.id})">
+
+                        Terima
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    }catch(error){
+
+        console.log(error);
+
+        alert(
+            "Gagal load booking"
+        );
+
+    }
 
 }
+
+
+
+// ======================================
+// TERIMA BOOKING
+// ======================================
+
+async function terimaBooking(id){
+
+    try{
+
+        const response =
+        await fetch(
+
+            `${API_URL}/${id}`,
+
+            {
+
+                method:"PUT",
+
+                headers:{
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    status_konseling:
+                    "berjalan"
+
+                })
+
+            }
+
+        );
+
+        const data =
+        await response.json();
+
+        console.log(data);
+
+        if(response.ok){
+
+            alert(
+                "Booking diterima"
+            );
+
+            loadBooking();
+
+        }else{
+
+            alert(
+                data.error ||
+                data.message ||
+                "Gagal update booking"
+            );
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        alert(
+            "Backend error"
+        );
+
+    }
+
+}
+
+
+
+// ======================================
+// AUTO LOAD
+// ======================================
 
 loadBooking();

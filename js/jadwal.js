@@ -1,37 +1,50 @@
 checkLogin();
 
-/*
-==========================
-USERNAME
-==========================
-*/
+const API_URL =
+"http://10.179.106.236:3000/api/jadwal";
 
 const username =
-localStorage.getItem(
-    "username"
-);
+localStorage.getItem("username");
 
 document.getElementById(
     "doctorName"
-).innerHTML = username;
+).innerHTML =
+username || "Psikolog";
 
-/*
-==========================
-LOAD JADWAL
-==========================
-*/
+
+// ======================================
+// LOAD JADWAL
+// ======================================
 
 async function loadJadwal(){
 
     try{
 
+        // ==============================
+        // AMBIL USER ID LOGIN
+        // ==============================
+
+        const userId =
+        localStorage.getItem("user_id");
+
+        // ==============================
+        // FETCH JADWAL PSIKOLOG
+        // ==============================
+
         const response =
         await fetch(
-            "http://localhost:3000/api/jadwal"
+
+            `${API_URL}/psikolog/${userId}`
+
         );
 
         const data =
         await response.json();
+
+        console.log(
+            "DATA JADWAL:",
+            data
+        );
 
         const table =
         document.getElementById(
@@ -40,43 +53,63 @@ async function loadJadwal(){
 
         table.innerHTML = "";
 
-        data.forEach((item)=>{
+        // ==============================
+        // KALAU BELUM ADA JADWAL
+        // ==============================
+
+        if(data.length === 0){
+
+            table.innerHTML = `
+
+            <tr>
+
+                <td colspan="4"
+                style="
+                text-align:center;
+                padding:20px;
+                ">
+
+                    Belum ada jadwal
+
+                </td>
+
+            </tr>
+
+            `;
+
+            return;
+
+        }
+
+        // ==============================
+        // LOOP DATA
+        // ==============================
+
+        data.forEach((jadwal) => {
 
             table.innerHTML += `
 
             <tr>
 
                 <td>
-
-                    ${item.tanggal}
-
+                    ${jadwal.tanggal}
                 </td>
 
                 <td>
-
-                    ${item.jam_mulai}
+                    ${jadwal.jam_mulai}
                     -
-                    ${item.jam_selesai}
-
+                    ${jadwal.jam_selesai}
                 </td>
 
                 <td>
-
-                    <span class="badge badge-success">
-
-                        ${item.status}
-
-                    </span>
-
+                    ${jadwal.status || "tersedia"}
                 </td>
 
                 <td>
 
                     <button
-                    class="btn-primary"
-                    onclick="hapusJadwal(
-                    ${item.id}
-                    )">
+                    onclick="hapusJadwal(${jadwal.id})"
+                    class="btn-danger">
 
                         Hapus
 
@@ -94,15 +127,19 @@ async function loadJadwal(){
 
         console.log(error);
 
+        alert(
+            "Gagal load jadwal"
+        );
+
     }
 
 }
 
-/*
-==========================
-TAMBAH JADWAL
-==========================
-*/
+
+
+// ======================================
+// TAMBAH JADWAL
+// ======================================
 
 async function tambahJadwal(){
 
@@ -121,6 +158,19 @@ async function tambahJadwal(){
         "jam_selesai"
     ).value;
 
+    // ==============================
+    // AMBIL USER ID LOGIN
+    // ==============================
+
+    const userId =
+    localStorage.getItem(
+        "user_id"
+    );
+
+    // ==============================
+    // VALIDASI
+    // ==============================
+
     if(
         !tanggal ||
         !jam_mulai ||
@@ -138,87 +188,168 @@ async function tambahJadwal(){
     try{
 
         const response =
+        await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                psikolog_id:
+                userId,
+
+                tanggal:
+                tanggal,
+
+                jam_mulai:
+                jam_mulai,
+
+                jam_selesai:
+                jam_selesai
+
+            })
+
+        });
+
+        const data =
+        await response.json();
+
+        console.log(
+            "RESPONSE:",
+            data
+        );
+
+        // ==============================
+        // SUCCESS
+        // ==============================
+
+        if(response.ok){
+
+            alert(
+                "Jadwal berhasil ditambah"
+            );
+
+            // reload tabel
+            loadJadwal();
+
+            // reset form
+            document.getElementById(
+                "tanggal"
+            ).value = "";
+
+            document.getElementById(
+                "jam_mulai"
+            ).value = "";
+
+            document.getElementById(
+                "jam_selesai"
+            ).value = "";
+
+        }else{
+
+            alert(
+
+                data.message ||
+
+                data.error ||
+
+                "Gagal tambah jadwal"
+
+            );
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        alert(
+            "Backend error"
+        );
+
+    }
+
+}
+
+
+
+// ======================================
+// HAPUS JADWAL
+// ======================================
+
+async function hapusJadwal(id){
+
+    const yakin =
+    confirm(
+        "Hapus jadwal ini?"
+    );
+
+    if(!yakin){
+
+        return;
+
+    }
+
+    try{
+
+        const response =
         await fetch(
-            "http://localhost:3000/api/jadwal",
+
+            `${API_URL}/${id}`,
+
             {
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body:JSON.stringify({
-
-                    tanggal,
-                    jam_mulai,
-                    jam_selesai,
-                    status:"tersedia"
-
-                })
+                method:"DELETE"
             }
+
         );
 
         const data =
         await response.json();
 
-        alert(
-            data.message ||
-            "Jadwal berhasil ditambah"
-        );
+        console.log(data);
 
-        loadJadwal();
+        if(response.ok){
 
-    }catch(error){
+            alert(
+                "Jadwal berhasil dihapus"
+            );
 
-        console.log(error);
+            loadJadwal();
 
-    }
+        }else{
 
-}
+            alert(
 
-/*
-==========================
-HAPUS JADWAL
-==========================
-*/
+                data.message ||
 
-async function hapusJadwal(id){
+                "Gagal hapus jadwal"
 
-    const confirmDelete =
-    confirm(
-        "Hapus jadwal ini?"
-    );
+            );
 
-    if(!confirmDelete) return;
-
-    try{
-
-        await fetch(
-            `http://10.179.106.236:3000/api/jadwal/${id}`,
-            {
-                method:"DELETE"
-            }
-        );
-
-        alert(
-            "Jadwal berhasil dihapus"
-        );
-
-        loadJadwal();
+        }
 
     }catch(error){
 
         console.log(error);
 
+        alert(
+            "Backend error"
+        );
+
     }
 
 }
 
-/*
-==========================
-LOAD
-==========================
-*/
+
+
+// ======================================
+// AUTO LOAD
+// ======================================
 
 loadJadwal();

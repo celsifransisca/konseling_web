@@ -73,7 +73,7 @@ async function loadDashboard(){
 
         const bookingResponse =
         await fetch(
-            "http://localhost:3000/api/booking"
+            "http://10.179.106.236:3000/api/booking"
         );
 
         const bookingData =

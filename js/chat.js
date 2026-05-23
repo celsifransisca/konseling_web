@@ -2,78 +2,84 @@ checkLogin();
 
 /*
 ==========================
-ELEMENT
+KONEKSI SOCKET KE BACKEND (LAPTOPMU)
 ==========================
 */
+// Pastikan IP ini sama dengan laptopmu yang menyalakan server Node.js
+const socket = io('http://10.179.106.236:3000'); 
 
-const messages =
-document.getElementById(
-    "messages"
-);
+// DATA DUMMY SEMENTARA UNTUK TESTING (Sesuaikan ID ini agar sama dengan di Flutter)
+const bookingId = 999; 
+const psikologId = 1; // Anggap ini ID psikolog yang sedang login
 
-const input =
-document.getElementById(
-    "messageInput"
-);
+/*
+==========================
+ELEMENT HTML
+==========================
+*/
+const messages = document.getElementById("messages");
+const input = document.getElementById("messageInput");
 
 /*
 ==========================
 AUTO SCROLL
 ==========================
 */
-
-function scrollBottom(){
-
-    messages.scrollTop =
-    messages.scrollHeight;
-
+function scrollBottom() {
+    messages.scrollTop = messages.scrollHeight;
 }
 
 /*
 ==========================
-SEND MESSAGE
+LOGIKA SOCKET.IO (TERIMA PESAN)
 ==========================
 */
+// 1. Saat berhasil konek, masuk ke ruang obrolan (room)
+socket.on('connect', () => {
+    console.log('Psikolog terhubung ke Server Chat!');
+    socket.emit('join_room', bookingId);
+});
 
-function sendMessage(){
+// 2. Saat menerima pesan dari mahasiswa (Flutter)
+socket.on('receive_message', (data) => {
+    // Kalau yang ngirim mahasiswa, munculkan di sebelah kiri
+    if (data.sender_role === 'mahasiswa') {
+        messages.innerHTML += `
+        <div class="message message-user">
+            ${data.text}
+        </div>
+        `;
+        scrollBottom();
+    }
+});
 
-    const message =
-    input.value.trim();
+/*
+==========================
+SEND MESSAGE (KIRIM PESAN)
+==========================
+*/
+function sendMessage() {
+    const message = input.value.trim();
+    if (message === "") return;
 
-    if(message === "") return;
-
-    /*
-    ==========================
-    CREATE BUBBLE
-    ==========================
-    */
-
+    // 1. Tampilkan di layar Psikolog sendiri (Kanan)
     messages.innerHTML += `
-
     <div class="message message-admin">
-
         ${message}
-
     </div>
-
     `;
 
-    /*
-    ==========================
-    CLEAR INPUT
-    ==========================
-    */
+    // 2. Tembakkan ke Server Node.js (biar diterusin ke Flutter & MongoDB)
+    socket.emit('send_message', {
+        booking_id: bookingId,
+        sender_id: psikologId,
+        sender_role: 'psikolog',
+        text: message
+    });
 
+    // 3. Bersihkan kolom input & scroll
     input.value = "";
-
-    /*
-    ==========================
-    SCROLL
-    ==========================
-    */
-
     scrollBottom();
-
 }
 
 /*
@@ -81,56 +87,8 @@ function sendMessage(){
 ENTER TO SEND
 ==========================
 */
-
-input.addEventListener(
-    "keypress",
-    function(e){
-
-        if(e.key === "Enter"){
-
-            sendMessage();
-
-        }
-
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
     }
-);
-
-/*
-==========================
-FAKE REALTIME DEMO
-==========================
-*/
-
-setTimeout(()=>{
-
-    messages.innerHTML += `
-
-    <div class="message message-user">
-
-        Halo dok saya sedang cemas
-        menghadapi skripsi 😔
-
-    </div>
-
-    `;
-
-    scrollBottom();
-
-},1500);
-
-setTimeout(()=>{
-
-    messages.innerHTML += `
-
-    <div class="message message-user">
-
-        Saya juga sering overthinking
-        soal masa depan
-
-    </div>
-
-    `;
-
-    scrollBottom();
-
-},4000);
+});

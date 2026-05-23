@@ -8,7 +8,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Laporan Konseling</title>
+<title>Jadwal Konseling</title>
 
 <link rel="stylesheet"
 href="css/style.css">
@@ -84,7 +84,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         </a>
 
-        <a href="jadwal.html">
+        <a
+        href="jadwal.html"
+        class="active">
 
             <i class="fa-solid fa-calendar"></i>
 
@@ -108,16 +110,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         </a>
 
-        <a
-        href="laporan.html"
-        class="active">
+        <a href="laporan.html">
 
             <i class="fa-solid fa-notes-medical"></i>
 
             Laporan Sesi
 
         </a>
-
 
         <a href="profile.html">
 
@@ -152,11 +151,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <div>
 
             <h1>
-                Laporan Konseling
+                Jadwal Konseling
             </h1>
 
             <p>
-                Catatan hasil sesi mahasiswa
+                Kelola jadwal sesi konseling psikolog
             </p>
 
         </div>
@@ -170,55 +169,54 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <div class="section-header">
 
             <h2>
-                Tambah Laporan
+                Tambah Jadwal
             </h2>
 
             <p>
-                Isi hasil konseling mahasiswa
+                Tambahkan jadwal konsultasi baru
             </p>
 
         </div>
 
-        <!-- BOOKING ID -->
+        <!-- TANGGAL -->
 
         <div class="input-group">
 
             <label>
-                Booking ID
+                Tanggal
             </label>
 
             <input
-            type="number"
-            id="booking_id"
-            placeholder="Masukkan booking ID">
+            type="date"
+            id="tanggal">
 
         </div>
 
-        <!-- DIAGNOSA -->
+        <!-- JAM MULAI -->
 
         <div class="input-group">
 
             <label>
-                Diagnosa
+                Jam Mulai
             </label>
 
-            <textarea
-            id="diagnosa"
-            placeholder="Masukkan diagnosa mahasiswa"></textarea>
+            <input
+            type="time"
+            id="jam_mulai">
 
         </div>
 
-        <!-- REKOMENDASI -->
+        <!-- JAM SELESAI -->
 
         <div class="input-group">
 
             <label>
-                Rekomendasi
+                Jam Selesai
             </label>
 
-            <textarea
-            id="rekomendasi"
-            placeholder="Masukkan rekomendasi"></textarea>
+            <input
+            type="time"
+            id="jam_selesai">
 
         </div>
 
@@ -226,18 +224,68 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         <button
         class="btn-primary"
-        onclick="buatLaporan()">
+        onclick="tambahJadwal()">
 
-            Simpan Laporan
+            Simpan Jadwal
 
         </button>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                Jadwal Saya
+            </h2>
+
+            <p>
+                List jadwal konseling aktif
+            </p>
+
+        </div>
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Tanggal
+                    </th>
+
+                    <th>
+                        Jam
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Aksi
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="jadwalTable">
+
+            </tbody>
+
+        </table>
 
     </div>
 
 </div>
 
 <script src="js/auth.js"></script>
-<script src="js/laporan.js"></script>
+<script src="js/jadwal.js"></script>
 
 </body>
 </html>
